@@ -1,0 +1,447 @@
+@import "tailwindcss";
+
+@theme {
+  /* Auriga Space Palette - Netflix Red Edition */
+  --color-brand-black: #000000;
+  /* Pure Black */
+  --color-brand-space: #141414;
+  /* Netflix Dark Gray */
+  --color-brand-void: #000000;
+  --color-brand-tech: #e50914;
+  /* Netflix Red */
+  --color-brand-accent: #b81d24;
+  /* Darker Red Accent */
+
+  /* Mappings */
+  --color-brand-primary: var(--color-brand-tech);
+  --color-brand-secondary: var(--color-brand-space);
+
+  /* Fallbacks for existing code using these names */
+  /* These are no longer needed as the new palette doesn't have direct equivalents for magenta/pink */
+  /* --color-brand-magenta: #a8ff36; */
+  /* --color-brand-pink: #09f; */
+
+  --color-glass-bg: rgba(12, 22, 79, 0.1);
+  --color-glass-border: rgba(86, 67, 253, 0.2);
+
+  --font-serif: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 4s ease-in-out infinite;
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes pulse-slow {
+
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
+  }
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+/* Orbyte structural protocols */
+.radial-button {
+  --border-color: rgba(255, 255, 255, 0.1);
+  --text-color: #fff;
+  --initial-bg: transparent;
+  --hover-bg: #e50914;
+  /* Marcomnation Red */
+  --hover-border-color: #e50914;
+  --hover-text-color: #fff;
+
+  position: relative;
+  display: flex;
+  height: 52px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 30px;
+  cursor: pointer;
+  color: var(--text-color);
+  background-color: var(--initial-bg);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+}
+
+.radial-button:before {
+  content: "";
+  position: absolute;
+  top: var(--y, 50%);
+  left: var(--x, 50%);
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 0;
+  background: var(--hover-bg);
+  border-radius: 50%;
+  z-index: 0;
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.radial-button:hover:before {
+  width: 400px;
+  height: 400px;
+}
+
+.radial-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.animated-text {
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.8s ease, filter 0.8s ease;
+}
+
+.animated-text.visible {
+  filter: blur(0);
+  opacity: 1;
+}
+
+/* Three.js Canvas Container */
+canvas {
+  z-index: 0;
+  pointer-events: none;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+}
+
+body,
+a,
+button,
+[role="button"] {
+  cursor: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-mono), monospace;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+#smooth-wrapper {
+  overflow: hidden;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#smooth-content {
+  overflow: visible;
+  width: 100%;
+  /* Fix for fixed elements inside smooth-content */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif), serif;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  @apply bg-glass-bg backdrop-blur-xl border border-glass-border;
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(86, 67, 253, 0.5);
+  /* Auriga Tech Glow */
+}
+
+.hero-orb {
+  background: radial-gradient(circle at 30% 30%, rgba(229, 9, 20, 0.15), rgba(20, 20, 20, 0.2), transparent 70%);
+  filter: blur(100px);
+  mix-blend-mode: screen;
+}
+
+/* Metallic Text Utilities */
+.text-metallic {
+  background: linear-gradient(135deg, #ffffff 0%, #a5a5a5 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0px 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.text-metallic-red {
+  background: linear-gradient(135deg, #ff4d4d 0%, #e50914 50%, #8a0c10 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(229, 9, 20, 0.3));
+}
+
+/* Auriga Technical Utilities */
+.tech-line {
+  @apply bg-brand-tech/20;
+}
+
+.tech-line-h {
+  @apply w-full h-px bg-brand-tech/20;
+}
+
+.tech-line-v {
+  @apply h-full w-px bg-brand-tech/20;
+}
+
+.tech-marker {
+  @apply absolute font-mono text-[8px] text-brand-tech/50 uppercase tracking-widest;
+}
+
+.blueprint-grid {
+  background-image: radial-gradient(circle, rgba(86, 67, 253, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Cinematic Video Overlay Utilities */
+.bw-video {
+  filter: grayscale(100%) contrast(1.2) brightness(0.8);
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.05;
+  pointer-events: none;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  filter: contrast(150%) brightness(100%);
+}
+
+@keyframes noise {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-5%, -5%);
+  }
+
+  20% {
+    transform: translate(-10%, 5%);
+  }
+
+  30% {
+    transform: translate(5%, -10%);
+  }
+
+  40% {
+    transform: translate(-5%, 15%);
+  }
+
+  50% {
+    transform: translate(-10%, 5%);
+  }
+
+  60% {
+    transform: translate(15%, 0);
+  }
+
+  70% {
+    transform: translate(0, 10%);
+  }
+
+  80% {
+    transform: translate(-15%, 0);
+  }
+
+  90% {
+    transform: translate(10%, 5%);
+  }
+}
+
+.noise-animate {
+  animation: noise 0.2s infinite;
+}
+
+/* User Provided Font Definitions */
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/ba9851c3c22cd980-s.woff2) format("woff2");
+  unicode-range: u+0460-052f, u+1c80-1c8a, u+20b4, u+2de0-2dff, u+a640-a69f, u+fe2e-fe2f
+}
+
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/21350d82a1f187e9-s.woff2) format("woff2");
+  unicode-range: u+0301, u+0400-045f, u+0490-0491, u+04b0-04b1, u+2116
+}
+
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/c5fe6dc8356a8c31-s.woff2) format("woff2");
+  unicode-range: u+1f??
+}
+
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/19cfc7226ec3afaa-s.woff2) format("woff2");
+  unicode-range: u+0370-0377, u+037a-037f, u+0384-038a, u+038c, u+038e-03a1, u+03a3-03ff
+}
+
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/df0a9ae256c0569c-s.woff2) format("woff2");
+  unicode-range: u+0102-0103, u+0110-0111, u+0128-0129, u+0168-0169, u+01a0-01a1, u+01af-01b0, u+0300-0301, u+0303-0304, u+0308-0309, u+0323, u+0329, u+1ea0-1ef9, u+20ab
+}
+
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/8e9860b6e62d6359-s.woff2) format("woff2");
+  unicode-range: u+0100-02ba, u+02bd-02c5, u+02c7-02cc, u+02ce-02d7, u+02dd-02ff, u+0304, u+0308, u+0329, u+1d00-1dbf, u+1e00-1e9f, u+1ef2-1eff, u+2020, u+20a0-20ab, u+20ad-20c0, u+2113, u+2c60-2c7f, u+a720-a7ff
+}
+
+@font-face {
+  font-family: __Inter_f367f3;
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url(/_next/static/media/e4af272ccee01ff0-s.p.woff2) format("woff2");
+  unicode-range: u+00??, u+0131, u+0152-0153, u+02bb-02bc, u+02c6, u+02da, u+02dc, u+0304, u+0308, u+0329, u+2000-206f, u+20ac, u+2122, u+2191, u+2193, u+2212, u+2215, u+feff, u+fffd
+}
+
+@font-face {
+  font-family: __Inter_Fallback_f367f3;
+  src: local("Arial");
+  ascent-override: 90.49%;
+  descent-override: 22.56%;
+  line-gap-override: 0.00%;
+  size-adjust: 107.06%
+}
+
+.__className_f367f3 {
+  font-family: __Inter_f367f3, __Inter_Fallback_f367f3;
+  font-style: normal
+}
+
+.__variable_f367f3 {
+  --font-inter: "__Inter_f367f3", "__Inter_Fallback_f367f3"
+}
+
+@font-face {
+  font-family: __esbuild_b38aaf;
+  src: url(/_next/static/media/14d7ce3e41dcbb66-s.p.woff2) format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: __esbuild_b38aaf;
+  src: url(/_next/static/media/e8b276476c0ac6fa-s.p.woff2) format("woff2");
+  font-display: swap;
+  font-weight: 500;
+  font-style: normal
+}
+
+@font-face {
+  font-family: __esbuild_b38aaf;
+  src: url(/_next/static/media/1b0b3615811be75b-s.p.woff2) format("woff2");
+  font-display: swap;
+  font-weight: 600;
+  font-style: normal
+}
+
+@font-face {
+  font-family: __esbuild_Fallback_b38aaf;
+  src: local("Arial");
+  ascent-override: 119.08%;
+  descent-override: 49.87%;
+  line-gap-override: 17.30%;
+  size-adjust: 98.26%
+}
+
+.__className_b38aaf {
+  font-family: __esbuild_b38aaf, __esbuild_Fallback_b38aaf
+}
+
+.__variable_b38aaf {
+  --font-esbuild: "__esbuild_b38aaf", "__esbuild_Fallback_b38aaf"
+}
+
+@font-face {
+  font-family: __sf_0aa2f2;
+  src: url(/_next/static/media/c92e08b531692979-s.p.woff2) format("woff2");
+  font-display: swap;
+  font-weight: 400;
+  font-style: normal
+}
+
+@font-face {
+  font-family: __sf_Fallback_0aa2f2;
+  src: local("Arial");
+  ascent-override: 70.28%;
+  descent-override: 17.81%;
+  line-gap-override: 0.00%;
+  size-adjust: 135.47%
+}
+
+.__className_0aa2f2 {
+  font-family: __sf_0aa2f2, __sf_Fallback_0aa2f2;
+  font-weight: 400;
+  font-style: normal
+}
+
+.__variable_0aa2f2 {
+  --font-mono: "__sf_0aa2f2", "__sf_Fallback_0aa2f2"
+}
